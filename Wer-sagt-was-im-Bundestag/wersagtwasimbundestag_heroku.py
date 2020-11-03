@@ -11,7 +11,7 @@ import seaborn as sns
 
 #import sys
 
-import webbrowser # muss nicht installiert werden
+import webbrowser                                                               # does not need to be installed 
 import os
 
 sns.set_style("whitegrid")
@@ -40,8 +40,6 @@ if language == "German":
         st.sidebar.markdown(" *Bsp.: 'Bundestag' enthält die Suchbegriffe 'Bund', sowie 'des'*")
         st.sidebar.info("Die Suche innerhalb einzelner Wörter kann vermieden werden, indem vor und/oder nach dem Suchbegriff ein Leerzeichen gesetzt wird.")
         st.sidebar.markdown(" *Bsp.: 'Bundestag' enthält '<Leerzeichen>Bund', jedoch nicht 'Bund<Leerzeichen>'*")    
-        
-       # st.sidebar.info(f"*(Der Datensatz enthält momentan rund 7 mio. Wörter - häufig genannte Suchbegriffe können zu einer etwas längeren Rechendauer führen.)*")
     
     per_word = False
     sentence = True
@@ -70,7 +68,6 @@ if language == "German":
         <a >Wer sagt was im Bundestag?</a>\
         </p>', unsafe_allow_html=True)
     
-
     ##################### 
     @st.cache(suppress_st_warning=True, show_spinner=False)
     def load_de():
@@ -180,8 +177,7 @@ if language == "German":
     
             return df        
         
-        else:
-            
+        else:        
             parties = []
             cdu = []
             spd = []
@@ -204,7 +200,7 @@ if language == "German":
                     spd.append(1)
                 else: 
                     spd.append(0)
-                if ('90' in speech['party']):                                       # if (speech['party'] == 'BÜNDNIS 90/DIE GRÜNEN' or speech['party'] == 'Bündnis 90/Die Grünen'):
+                if ('90' in speech['party']):                                   # if (speech['party'] == 'BÜNDNIS 90/DIE GRÜNEN' or speech['party'] == 'Bündnis 90/Die Grünen'):
                     gruene.append(1)
                 else: 
                     gruene.append(0)    
@@ -226,7 +222,6 @@ if language == "German":
                     fraktionslos.append(0)
       #          if speech['party'] != 'CDU/CSU' and speech['party'] != 'SPD' and speech['party'] != 'AfD' and speech['party'] != 'FDP' and speech['party'] != 'BÜNDNIS 90/DIE GRÜNEN' and speech['party'] != 'Bündnis 90/Die Grünen' and speech['party'] != 'DIE LINKE' and speech['party'] != 'fraktionslos' and speech['party'] != 'Fraktionslos' and speech['party'] != 'Bremen':
        #             st.write(speech['party'])
-           #!         gruene.append(1)
     
             # Create an empty dataframe
             df = pd.DataFrame()
@@ -258,7 +253,7 @@ if language == "German":
                 num_words_party[0] += len(speech['text'].split())
             elif (speech['party'] == 'SPD'):
                 num_words_party[1] += len(speech['text'].split())
-            elif ('90'in speech['party']):                                              # speech['party'] == 'BÜNDNIS 90/DIE GRÜNEN' or speech['party'] == 'Bündnis 90/Die Grünen' or speech['party'] == 'BUENDNIS 90/DIE GRUENEN'):
+            elif ('90'in speech['party']):                                      # speech['party'] == 'BÜNDNIS 90/DIE GRÜNEN' or speech['party'] == 'Bündnis 90/Die Grünen' or speech['party'] == 'BUENDNIS 90/DIE GRUENEN'):
                 num_words_party[2] += len(speech['text'].split()) 
             elif (speech['party'] == 'DIE LINKE'):
                 num_words_party[3] += len(speech['text'].split())  
@@ -281,7 +276,7 @@ if language == "German":
                 num_speeches_party[0] += 1
             elif (speech['party'] == 'SPD'):
                 num_speeches_party[1] += 1
-            elif ('90'in speech['party']):                                          # (speech['party'] == 'BÜNDNIS 90/DIE GRÜNEN' or speech['party'] == 'Bündnis 90/Die Grünen' or speech['party'] == 'BUENDNIS 90/DIE GRUENEN'):
+            elif ('90'in speech['party']):                                      # (speech['party'] == 'BÜNDNIS 90/DIE GRÜNEN' or speech['party'] == 'Bündnis 90/Die Grünen' or speech['party'] == 'BUENDNIS 90/DIE GRUENEN'):
                 num_speeches_party[2] += 1
             elif (speech['party'] == 'DIE LINKE'):
                 num_speeches_party[3] += 1
@@ -298,7 +293,7 @@ if language == "German":
     def fct_dfplot(dfagg):  
       
         date = []
-        party = []                                                           #df['CDU/CSU']+df['SPD']+df['BÜNDNIS 90/DIE GRÜNEN']+df['DIE LINKE']+df['AfD']+df['FDP']+df['fraktionslos']
+        party = []                                                              #df['CDU/CSU']+df['SPD']+df['BÜNDNIS 90/DIE GRÜNEN']+df['DIE LINKE']+df['AfD']+df['FDP']+df['fraktionslos']
         num = []
         
         dfagg = dfagg.reset_index()
@@ -353,11 +348,11 @@ if language == "German":
     
     num_words_party = count_words(all_speeches)
     num_words_all = sum(num_words_party)
-    # Gewichtung: Nennung pro 100.000 Wörter
+    # weight: mentions per 100,000 words
     words_bal = [i/j for i,j in zip([100000 for i in range(7)],num_words_party)]    
     
     num_speeches_party = count_speeches(all_speeches)
-    # Gewichtung: Nennung pro 1000 Reden
+    # weight: mentions per 100,000 words
     speeches_bal = [i/j for i,j in zip([1000 for i in range(7)],num_speeches_party)]
     
     
@@ -366,7 +361,7 @@ if language == "German":
     #st.write("bytes speeches_de:", sys.getsizeof(all_speeches))
     st.subheader(" **Wonach willst du suchen?**")
     
-    search_query = st.text_input(label = "", value = "EU" )                 # EU                            
+    search_query = st.text_input(label = "", value = "EU" )                     # EU                            
     if search_query == "":
         search_query = " "    
     
@@ -410,11 +405,11 @@ if language == "German":
     else:
         if per_word:        
             if no_fraktionslos:
-                words_bal[6] = 0                                                    # Fraktionslosen keine Gewichtung zuweisen
+                words_bal[6] = 0                                                # weight of "Fraktionslose" is 0
             dfagg_bal = dfagg*words_bal
         else:
             if no_fraktionslos:
-                speeches_bal[6] = 0                                                 # Fraktionslosen keine Gewichtung zuweisen
+                speeches_bal[6] = 0                                             # weight of "Fraktionslose" is 0
             dfagg_bal = dfagg*speeches_bal                            
     
     
@@ -438,7 +433,7 @@ if language == "German":
             st.write("**Anteil der Fraktionen an absoluter Anzahl**")
             
             total_n = np.array(dfplot['n'])
-            chunked_sum  = np.repeat(np.sum(total_n.reshape(-1,7), axis = 1),7)                              # summiert 
+            chunked_sum  = np.repeat(np.sum(total_n.reshape(-1,7), axis = 1),7) # sum 
             dfplot_div = dfplot
             dfplot_div['n'] = [i/j for i,j in zip(dfplot['n'], chunked_sum)] 
             altair_plot(dfplot)   
@@ -447,7 +442,7 @@ if language == "German":
         #######################################################
     st.markdown("--------------------------------------------------------------------------------------------------")
     st.subheader("**Wonach willst du noch suchen?**")
-    search_query2 = st.text_input(label = "", value = "Bürokratie")                 # Bürokratie
+    search_query2 = st.text_input(label = "", value = "Bürokratie")             # Bürokratie
     
     if search_query2 == "":
         search_query2 = " "                                             
@@ -512,7 +507,7 @@ if language == "German":
         #    st.area_chart(df2agg.div(df2agg.sum(axis=1), axis=0).fillna(0),img_width,img_height,True)
         
             total_n = np.array(dfplot['n'])
-            chunked_sum  = np.repeat(np.sum(total_n.reshape(-1,7), axis = 1),7)         # summiert 
+            chunked_sum  = np.repeat(np.sum(total_n.reshape(-1,7), axis = 1),7) # sum 
             dfplot_div = dfplot
             dfplot_div['n'] = [i/j for i,j in zip(dfplot['n'], chunked_sum)] 
             altair_plot(dfplot_div)
@@ -543,11 +538,11 @@ if language == "German":
             dfjagg_bal = dfjagg*speeches_bal
             if per_word:        
                 if no_fraktionslos:
-                    words_bal[6] = 0                                                    # Fraktionslosen keine Gewichtung zuweisen
+                    words_bal[6] = 0                                            # weight of "Fraktionslose" is 0
                 dfjagg_bal = dfjagg*words_bal
             else:
                 if no_fraktionslos:
-                    speeches_bal[6] = 0                                                 # Fraktionslosen keine Gewichtung zuweisen
+                    speeches_bal[6] = 0                                         # weight of "Fraktionslose" is 0
                 dfjagg_bal = dfjagg*speeches_bal                            
     
             if "Reskaliert" in graph_select:
@@ -575,7 +570,7 @@ if language == "German":
             #        st.area_chart(dfjagg.div(dfjagg.sum(axis=1), axis=0).fillna(0),img_width,img_height,True)
             
                     total_n = np.array(dfplot['n'])
-                    chunked_sum  = np.repeat(np.sum(total_n.reshape(-1,7), axis = 1),7)     # summiert 
+                    chunked_sum  = np.repeat(np.sum(total_n.reshape(-1,7), axis = 1),7)     # sum
                     dfplot_div = dfplot
                     dfplot_div['n'] = [i/j for i,j in zip(dfplot['n'], chunked_sum)] 
                     altair_plot(dfplot_div)
@@ -589,11 +584,11 @@ if language == "German":
                     step = round((1/len(tqdm.tqdm(jointspeeches))),7) *0.999               
                     stm_list=[]
 
-                    for speech in tqdm.tqdm(jointspeeches):                         # tqdm: progress bar
+                    for speech in tqdm.tqdm(jointspeeches):                     # tqdm: progress bar
                         sentence_bar_counter += step
                         sentence_bar.progress(sentence_bar_counter)                        
                         
-                        doc = nlp_de(speech["text"])                                       # npl() natural language processing
+                        doc = nlp_de(speech["text"])                           
 
                         for sent in doc.sents:
                             if search_query in sent.text and search_query2 in sent.text:
@@ -624,10 +619,10 @@ if language == "German":
 
                 def text_cosine_similarity(text1, text2):
                     
-                    c1 = Counter(text1.split())                                                 # 'EU-Ebene' -> one word, no comma
+                    c1 = Counter(text1.split())                                 # 'EU-Ebene' -> one word, no comma
                     c2 = Counter(text2.split())
-                    terms = set(c1).union(c2)                                                   # combine sets
-                    dotprod = sum(c1.get(k, 0) * c2.get(k, 0) for k in terms)                   # c1.get(k, 0) -> returns number of mentions (k) or 0 if words doesn't exist
+                    terms = set(c1).union(c2)                                  
+                    dotprod = sum(c1.get(k, 0) * c2.get(k, 0) for k in terms)   # c1.get(k, 0) -> returns number of mentions (k) or 0 if words doesn't exist
                     magA = (sum(c1.get(k, 0)**2 for k in terms))**0.5
                     magB = (sum(c2.get(k, 0)**2 for k in terms))**0.5
                     
@@ -718,7 +713,8 @@ if language == "German":
                             }
                     node_list.append(dict)
 
-                loading_graph.empty()                            
+                loading_graph.empty()
+                            
                 ###################
                 # create HTML
                 
@@ -751,9 +747,9 @@ if language == "German":
                 
                 #Change path to reflect file location
                 
-           #     filename = 'file:///'+os.getcwd()+'/' + 'speeches_graph.html'
+           #     filename = 'file:///'+os.getcwd()+'/' + 'speeches_graph.html'      # works for local host
              #   filename = 'speeches_graph.html'                                   
-                filename = '/app/speeches_graph.html'                               # keine dieser Varianten funktioniert
+                filename = '/app/speeches_graph.html'                               # non of these work for Heroku
                 webbrowser.open_new_tab(filename)  
                 st.write("**Lemmatisierte Reden:**")
                 st.write(j_lemma)
