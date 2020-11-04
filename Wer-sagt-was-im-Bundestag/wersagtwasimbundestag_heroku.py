@@ -634,7 +634,8 @@ if language == "German":
                     
                     color_map = []
                     link_list = []
-         
+                    cos_sim_list = []
+                    
                     speech1_count = 0
                     speech2_count = 0
                     global graph_bar
@@ -660,8 +661,12 @@ if language == "German":
                 #            st.write('Achtung:', speech['party'])
                         
                         for speech2 in j_lemma:
+
+                            cos_sim = text_cosine_similarity(speech['text'], speech2['text'])
+                            cos_sim_list.append(cos_sim) 
+                            
                             if speech2_count > speech1_count: # doppelte Links verhindern
-                                if text_cosine_similarity(speech['text'], speech2['text']) > cos_sim_thresh:
+                                if cos_sim > cos_sim_thresh:
                                     link = {'source': f'id{speech1_count}',
                                              'target': f'id{speech2_count}'
                                             }
@@ -673,7 +678,7 @@ if language == "German":
                         speech2_count = 0
                         speech1_count += 1
                     graph_bar.empty()    
-                    return (id_list, color_map, link_list)
+                    return (id_list, color_map, link_list, cos_sim_list)
                 
                 def text_to_lemma_str(text):
 
@@ -704,7 +709,7 @@ if language == "German":
                 
                 j_lemma = [{'party': i, 'text': j} for i,j, in zip(party_list,text_list_lemma)]
 
-                id_list, color_map, link_list = create_graph_data()
+                id_list, color_map, link_list, cos_sim_list = create_graph_data()
 
                 node_list = []
                 for i in range(len(id_list)):
@@ -712,7 +717,13 @@ if language == "German":
                             'color': color_map[i]
                             }
                     node_list.append(dict)
-
+                
+                st. write(f"Schwellenwert für Kosinus-Ähnlichkeit: {cos_sim_thresh}")
+                median_links = round(np.median(cos_sim_list), 4)
+                st. write(f"Median der Links: {median_links}")
+                std_links = round(np.std(cos_sim_list), 4)
+                st. write(f"Standardabweichung der Links: {std_links}", )
+                
                 loading_graph.empty()
                             
                 ###################
@@ -747,9 +758,9 @@ if language == "German":
                 
                 #Change path to reflect file location
                 
-           #     filename = 'file:///'+os.getcwd()+'/' + 'speeches_graph.html'      # works for local host
+                filename = 'file:///'+os.getcwd()+'/' + 'speeches_graph.html'   # works for local host
              #   filename = 'speeches_graph.html'                                   
-                filename = '/app/speeches_graph.html'                               # non of these work for Heroku
+              #  filename = '/app/speeches_graph.html'                          # non of these work for Heroku
                 webbrowser.open_new_tab(filename)  
                 st.write("**Lemmatisierte Reden:**")
                 st.write(j_lemma)
